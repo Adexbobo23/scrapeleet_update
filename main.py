@@ -222,32 +222,79 @@ def manager():
         elif a == 4:
             print(f'\n{lg}[i] Checking for updates...')
             try:
-                version = requests.get('https://raw.githubusercontent.com/saifalisew1508/Telegram-Members-Adder/main/version.txt')
-            except:
-                print(f'{r} You are not connected to the internet')
-                print(f'{r} Please connect to the internet and retry')
+                version_url = 'https://raw.githubusercontent.com/Adexbobo23/scrapeleet_update/main/version.txt'
+                version = requests.get(version_url).text.strip()
+            except Exception as e:
+                print(f'{r} You are not connected to the internet or the server is unavailable.')
+                print(f'{r} Error: {e}')
+                print(f'{r} Please connect to the internet and retry.')
                 exit()
-            if float(version.text) > 2.0:
-                prompt = str(input(f'{lg}[~] Update available[Version {version.text}]. Download?[y/n]: {r}'))
-                if prompt in {'y', 'yes', 'Y'}:
+
+            local_version = 2.0  # Update this to your script's current version
+            if float(version) > local_version:
+                prompt = str(input(f'{lg}[~] Update available [Version {version}]. Download? [y/n]: {r}')).strip().lower()
+                if prompt in {'y', 'yes'}:
                     print(f'{lg}[i] Downloading updates...')
-                    if os.name == 'nt':
-                        os.system('del add.py')
-                        os.system('del manager.py')
-                    else:
-                        os.system('rm add.py')
-                        os.system('rm manager.py')
-                    os.system('curl -l -O https://raw.githubusercontent.com/saifalisew1508/Telegram-Members-Adder/main/add.py')
-                    os.system('curl -l -O https://raw.githubusercontent.com/saifalisew1508/Telegram-Members-Adder/main/manager.py')
-                    print(f'{lg}[*] Updated to version: {version.text}')
-                    input('Press enter to exit...')
-                    exit()
+                    try:
+                        file_url = 'https://raw.githubusercontent.com/Adexbobo23/scrapeleet_update/main/main.py'
+                        response = requests.get(file_url)
+                        response.raise_for_status()  # Check for HTTP request errors
+
+                        # Backup existing file (overwrite if the backup already exists)
+                        if os.path.exists('main.py'):
+                            os.replace('main.py', 'main.py.bak')
+
+                        # Save the updated file with UTF-8 encoding
+                        with open('main.py', 'w', encoding='utf-8') as f:
+                            f.write(response.text)
+                        
+                        print(f'{lg}[+] Successfully updated main.py to version {version}.')
+                        input('Press enter to exit...')
+                        exit()
+                    except Exception as e:
+                        print(f'{r}[!] Failed to update main.py. Error: {e}')
+                        # Restore backup if update fails
+                        if os.path.exists('main.py.bak'):
+                            os.replace('main.py.bak', 'main.py')
+                        print(f'{r}[!] Reverted to the previous version of main.py.')
+                        input('Press enter to go to the main menu...')
                 else:
                     print(f'{lg}[!] Update aborted.')
-                    input('Press enter to goto main menu...')
+                    input('Press enter to go to the main menu...')
             else:
-                print(f'{lg}[i] Your Scrapeleet Telegram-Members-Adder is already up to date')
-                input('Press enter to goto main menu...')
+                print(f'{lg}[i] Your Telegram-Members-Adder is already up to date.')
+                input('Press enter to go to the main menu...')
+
+
+        # elif a == 4:
+        #     print(f'\n{lg}[i] Checking for updates...')
+        #     try:
+        #         version = requests.get('https://raw.githubusercontent.com/Adexbobo23/scrapeleet_update/main/version.txt')
+        #     except:
+        #         print(f'{r} You are not connected to the internet')
+        #         print(f'{r} Please connect to the internet and retry')
+        #         exit()
+        #     if float(version.text) > 2.0:
+        #         prompt = str(input(f'{lg}[~] Update available[Version {version.text}]. Download?[y/n]: {r}'))
+        #         if prompt in {'y', 'yes', 'Y'}:
+        #             print(f'{lg}[i] Downloading updates...')
+        #             if os.name == 'nt':
+        #                 os.system('del add.py')
+        #                 os.system('del manager.py')
+        #             else:
+        #                 os.system('rm add.py')
+        #                 os.system('rm manager.py')
+        #             os.system('curl -l -O https://raw.githubusercontent.com/Adexbobo23/scrapeleet_update/main/add.py')
+        #             os.system('curl -l -O https://raw.githubusercontent.com/Adexbobo23/scrapeleet_update/main/manager.py')
+        #             print(f'{lg}[*] Updated to version: {version.text}')
+        #             input('Press enter to exit...')
+        #             exit()
+        #         else:
+        #             print(f'{lg}[!] Update aborted.')
+        #             input('Press enter to goto main menu...')
+        #     else:
+        #         print(f'{lg}[i] Your Scrapeleet Telegram-Members-Adder is already up to date')
+        #         input('Press enter to goto main menu...')
 
         elif a == 5:
             accs = []
