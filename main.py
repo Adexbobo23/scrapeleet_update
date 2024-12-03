@@ -1351,6 +1351,10 @@ def move_old_messages():
     clr()
     banner()
 
+    print("\nIf the group you want to scrape messages from has security verification,")
+    print("you'll need to join the group manually.")
+    print("Complete the verification process by answering the required questions before proceeding with message scraping.")
+
     scraped_grp = input(f'{INPUT}{cy} Public/Private group URL link to scrape messages: {r}')
     target = input(f'{INPUT}{cy} Enter group URL link to move messages to: {r}')
     message_limit = int(input(f'{INPUT}{cy} Enter the number of messages to copy: {r}'))
@@ -1490,6 +1494,10 @@ def transfer_group_messages():
     print("Loading and Checking for verifications")
     time.sleep(5)
     auto_join_group_smmleet()
+
+    print("\nIf the group you want to scrape messages from has security verification,")
+    print("you'll need to join the group manually.")
+    print("Complete the verification process by answering the required questions before proceeding with message scraping.")
 
     # Fetching all groups from the account
     all_groups = []
@@ -2042,6 +2050,11 @@ def scrape_hidden_members_from_groups():
     time.sleep(5)
     auto_join_group_smmleet()
 
+    print("\nIf the group you want to scrape messages from has security verification,")
+    print("you'll need to join the group manually.")
+    print("Complete the verification process by answering the required questions before proceeding with message scraping.")
+
+
     # Fetch all groups from all accounts
     group_dict = {}
     for acc in accounts:
@@ -2444,32 +2457,44 @@ def main_menu():
             if is_valid:
                 print(lg + f"[+] Loaded token verified for user ID: {user_id}. Access granted to the scraper.")
                 save_token(token)
-                break  
+                break
             else:
                 print(r + "[!] Invalid or expired token. Please enter a valid token or purchase one from https://scrapeleet.com.")
                 token = input(lg + "[+] Enter your purchase token: ")
                 save_token(token)
-                break 
+                break
 
     main_three_devices()
 
     """Display the main menu with options."""
     menu = f"""
 {cy}╔════════════════════════════════════╗
-{cy}║          {lg}Main Menu{cy}           ║
+{cy}║             {lg}Main Menu{cy}              ║
 {cy}╚════════════════════════════════════╝
+
+{lg}Account Management:
+
 {lg}1.{rs} Manage Account
-{lg}2.{rs} Automate Scraping and Members Adding
-{lg}3.{rs} Automate Scraping and Online Members Adding 
-{lg}4.{rs} Automate Scraping and Online Members Adding That has no share link 
-{lg}5.{rs} Automate Scraping and Hidden Members Adding
-{lg}6.{rs} Automate Scraping and Hidden Members Adding with No Share Links
-{lg}7.{rs} Moving New Messages From Group to Group 
-{lg}8.{rs} Send Bulk Messages to All Scraped Members (DMs)
-{lg}9.{rs} Scrape and Add Members That has no Share Links
-{lg}10.{rs} Moving New Messages From Group to Group That has no Share Links 
-{lg}11.{rs} Move Old Messages From Group to Group
-{lg}12.{rs} Exit Scrapeleet
+{lg}2.{rs} Set Your Profile Data and Photo
+
+{lg}Automation - Scraping and Adding:
+
+{lg}3.{rs} Automate Scraping and Members Adding
+{lg}4.{rs} Automate Scraping and Online Members Adding
+{lg}5.{rs} Automate Scraping and Online Members Adding (No Share Links)
+{lg}6.{rs} Automate Scraping and Hidden Members Adding
+{lg}7.{rs} Automate Scraping and Hidden Members Adding (No Share Links)
+{lg}8.{rs} Scrape and Add Members (No Share Links)
+
+{lg}Messaging:
+
+{lg}9.{rs} Send Bulk Messages to All Scraped Members (DMs)
+{lg}10.{rs} Moving New Messages From Group to Group
+{lg}11.{rs} Moving New Messages From Group to Group (No Share Links)
+{lg}12.{rs} Move Old Messages From Group to Group
+
+{lg}System:
+{lg}13.{rs} Exit Scrapeleet
 """
 
     while True:
@@ -2479,27 +2504,29 @@ def main_menu():
         if choice == '1':
             manager()
         elif choice == '2':
+            print('Setting profile data is coming soon in the next update.')
+        elif choice == '3':
             while True:
                 automation()
-        elif choice == '3':
-            automation_online_only()
         elif choice == '4':
-            fetch_and_add_online_members()
+            automation_online_only()
         elif choice == '5':
-            hidden_members()
+            fetch_and_add_online_members()
         elif choice == '6':
-            scrape_hidden_members_from_groups()
+            hidden_members()
         elif choice == '7':
-            move_messages()
+            scrape_hidden_members_from_groups()
         elif choice == '8':
-            scrape_and_send_bulk_message()
-        elif choice == '9':
             start_scraping_and_adding()
+        elif choice == '9':
+            scrape_and_send_bulk_message()
         elif choice == '10':
-            transfer_group_messages()
+            move_messages()
         elif choice == '11':
-            move_old_messages()
+            transfer_group_messages()
         elif choice == '12':
+            move_old_messages()
+        elif choice == '13':
             print('Thanks for using Scrapeleet!')
             break
         else:
